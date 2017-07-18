@@ -19,10 +19,10 @@ public class Helpers {
     }
 
     public static <T> String print(T[] array) {
-        StringJoiner sj = new StringJoiner("\n");
+        StringJoiner sj = new StringJoiner(" ");
 
         Arrays.stream(array).forEach((e -> sj.add(String.valueOf(e))));
-
+        System.out.println(sj.toString());
         return sj.toString();
     }
 
