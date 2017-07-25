@@ -9,6 +9,8 @@ public class Main {
 
         Snake snake = new Snake();
 
+        snake.markSnake(new char[]{'S','R','R','D'});
+
         snake.gen(0, 0, 0, 'S');
     }
 }
