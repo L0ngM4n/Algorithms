@@ -1,5 +1,7 @@
 package greedy_algorithms.lab;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import java.util.*;
 
 public class p01_sumOfCoins {
@@ -8,7 +10,7 @@ public class p01_sumOfCoins {
     Scanner in = new Scanner(System.in);
 
     String[] elements = in.nextLine().substring(7).split(", ");
-    Integer[] coins = new Integer[elements.length];
+    int[] coins = new int[elements.length];
     for (int i = 0; i < coins.length; i++) {
       coins[i] = Integer.parseInt(elements[i]);
     }
@@ -19,9 +21,9 @@ public class p01_sumOfCoins {
     // fancy printing
   }
 
-  public static Map<Integer, Integer> chooseCoins(Integer[] coins, int targetSum) {
+  public static Map<Integer, Integer> chooseCoins(int[] coins, int targetSum) {
 
-    sortCoins(coins);
+    coins = sortCoins(coins);
     Map<Integer, Integer> result = new HashMap<>();
 
     int currentSum = 0;
@@ -29,12 +31,29 @@ public class p01_sumOfCoins {
 
     while (currentSum != targetSum && coinIndex < coins.length) {
 
+      int currentCoin = coins[coinIndex];
+      int remainder = targetSum - currentSum;
+      int numberOfCoins = remainder / currentCoin;
+
+      if (currentSum + (currentCoin * numberOfCoins) <= targetSum) {
+
+        result.put(currentCoin, numberOfCoins);
+        currentSum += currentCoin * numberOfCoins;
+        coinIndex++;
+      }
+
     }
-    return null;
+    if (currentSum != targetSum) {
+      throw new IllegalArgumentException();
+    }
+
+    return result;
   }
 
-  private static void sortCoins(Integer[] coins) {
-    Arrays.sort(coins, new Comparator<Integer>() {
+  private static int[] sortCoins(int[] coins) {
+    Integer[] integers = ArrayUtils.toObject(coins);
+
+    Arrays.sort(integers, new Comparator<Integer>() {
 
       @Override
       public int compare(Integer o1, Integer o2) {
@@ -42,5 +61,7 @@ public class p01_sumOfCoins {
         return o2.compareTo(o1);
       }
     });
+
+    return ArrayUtils.toPrimitive(integers);
   }
 }
