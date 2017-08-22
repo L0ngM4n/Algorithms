@@ -1,5 +1,7 @@
-package dynamicProgramming.lab1707;
+package dynamicProgramming.exercise;
 
+import java.util.Arrays;
+import java.util.Scanner;
 import java.util.Stack;
 
 /**
@@ -7,8 +9,8 @@ import java.util.Stack;
  */
 public class LongestZigZagSequence {
 
-     private static int[] s = {8, 10, 3, 5, 7, 0, 8, 9, 10, 20, 20, 20, 12, 19, 11};
-//  private static int[] s = {2, 1, 3};
+  private static int[] s = {8, 10, 3, 5, 7, 0, 8, 9, 10, 20, 20, 20, 12, 19, 11};
+  //  private static int[] s = {2, 1, 3};
 
   private static int[] oddBig;
   private static int[] oddBigPrev;
@@ -30,11 +32,10 @@ public class LongestZigZagSequence {
     evenBigPrev = new int[sequence.length];
   }
 
-  public int getLzz() {
+  public String getLzz() {
     int maxLen = 0;
     boolean isEven = true;
     int maxLenIndex = 0;
-
 
     evenBigPrev[0] = -1;
     oddBigPrev[0] = -1;
@@ -44,20 +45,28 @@ public class LongestZigZagSequence {
       for (int p = 0; p < c; p++) {
         // smaller c
         if (evenBig[p] % 2 == 0 && s[p] > s[c]) {
-          evenBig[c] = evenBig[p] + evenBig[c];
-          evenBigPrev[c] = p;
+          if (evenBig[c] <= evenBig[p]) {
+            evenBig[c] = evenBig[p] + 1;
+            evenBigPrev[c] = p;
+          }
           //bigger c
         } else if (evenBig[p] % 2 != 0 && s[p] < s[c]) {
-          evenBig[c] = evenBig[p] + evenBig[c];
-          evenBigPrev[c] = p;
+          if (evenBig[c] <= evenBig[p]) {
+            evenBig[c] = evenBig[p] + 1;
+            evenBigPrev[c] = p;
+          }
         }
 
         if (oddBig[p] % 2 == 0 && s[p] < s[c]) {
-          oddBig[c] = oddBig[p] + oddBig[c];
-          oddBigPrev[c] = p;
+          if (oddBig[c] <= oddBig[p]) {
+            oddBig[c] = oddBig[p] + 1;
+            oddBigPrev[c] = p;
+          }
         } else if (oddBig[p] % 2 != 0 && s[p] > s[c]) {
-          oddBig[c] = oddBig[p] + oddBig[c];
-          oddBigPrev[c] = p;
+          if (oddBig[c] <= oddBig[p]) {
+            oddBig[c] = oddBig[p] + 1;
+            oddBigPrev[c] = p;
+          }
         }
 
         if (maxLen < Math.max(oddBig[c], evenBig[c])) {
@@ -68,24 +77,27 @@ public class LongestZigZagSequence {
 
       }
     }
-    printSequence(isEven, maxLenIndex);
-    return maxLen;
+    return getSequence(isEven, maxLenIndex);
   }
 
-  private void printSequence(boolean isEven, int maxLenIndex) {
+  private String getSequence(boolean isEven, int maxLenIndex) {
     Stack<Integer> sequence = new Stack<>();
+    StringBuilder sb = new StringBuilder();
     while (maxLenIndex != -1) {
       sequence.push(s[maxLenIndex]);
       maxLenIndex = isEven ? evenBigPrev[maxLenIndex] : oddBigPrev[maxLenIndex];
     }
     while (!sequence.empty()) {
-      System.out.print(sequence.pop() + " ");
+      sb.append(sequence.pop()).append(" ");
     }
-    System.out.println();
+    return sb.toString().trim();
   }
 
   public static void main(String[] args) {
-    LongestZigZagSequence lzz = new LongestZigZagSequence();
+    Scanner sc = new Scanner(System.in);
+
+    int[] seq = Arrays.stream(sc.nextLine().split(" ")).mapToInt(Integer::parseInt).toArray();
+    LongestZigZagSequence lzz = new LongestZigZagSequence(seq);
 
     System.out.println(lzz.getLzz());
 

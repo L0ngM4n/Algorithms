@@ -1,4 +1,6 @@
-package dynamicProgramming.lab1707;
+package dynamicProgramming.exercise;
+
+import java.util.Scanner;
 
 /**
  * 16/08/2017
@@ -64,8 +66,14 @@ public class Binomial {
   }
 
   public static void main(String[] args) {
-    System.out.println(binomial(30, 7));
-    System.out.println(bin(30, 7));
-    System.out.println(binomialLowMemory(30, 7));
+    Scanner sc = new Scanner(System.in);
+    int n = Integer.parseInt(sc.nextLine());
+    int k = Integer.parseInt(sc.nextLine());
+
+
+//    System.out.println(binomial(n, k));
+//    System.out.println(binomial(30, 7));
+    System.out.println(bin(n, k));
+//    System.out.println(binomialLowMemory(30, 7));
   }
 }
