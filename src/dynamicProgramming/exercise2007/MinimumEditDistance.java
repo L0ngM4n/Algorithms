@@ -6,7 +6,7 @@ package dynamicProgramming.exercise2007;
 public class MinimumEditDistance {
   private static int COST_DELETE = 1;
   private static int COST_INSERT = 2;
-  private static String s1 = " equal";
+  private static String s1 = " equalrent";
   private static String s2 = " different";
   private static int[][] f = new int[s1.length()][s2.length()];
 
