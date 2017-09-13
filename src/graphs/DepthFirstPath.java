@@ -11,7 +11,7 @@ public class DepthFirstPath {
     private boolean[] visited;
     private int[] previous;
 
-    public DepthFirstPath(Graph graph, int s) {
+    public DepthFirstPath(SimpleGraph graph, int s) {
 
         this.s = s;
         this.visited = new boolean[graph.getV()];
@@ -19,7 +19,7 @@ public class DepthFirstPath {
         dfs(graph, s);
     }
 
-    private void dfs(Graph graph, int v) {
+    private void dfs(SimpleGraph graph, int v) {
         visited[v] = true;
         for (Integer w : graph.adj(v)) {
             if (!visited[w]) {

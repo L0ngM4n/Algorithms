@@ -5,9 +5,9 @@ import java.util.*;
 /**
  * 11/09/2017
  */
-public class MyGraphById {
+public class MyGraphById implements Iterable<Map.Entry<Vertex, List<Vertex>>> {
 
-    private Map<Vertex, List<Vertex>> graph = new HashMap<>();
+    private Map<Vertex, List<Vertex>> graph = new LinkedHashMap<>();
     private Map<String, Vertex> idVertex = new HashMap<>();
 
     public MyGraphById() {
@@ -36,5 +36,8 @@ public class MyGraphById {
         graph.get(idVertex).add(children);
     }
 
-
+    @Override
+    public Iterator<Map.Entry<Vertex, List<Vertex>>> iterator() {
+        return graph.entrySet().iterator();
+    }
 }

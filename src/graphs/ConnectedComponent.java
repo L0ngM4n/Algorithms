@@ -9,7 +9,7 @@ public class ConnectedComponent {
     private int[] id;
     private int count;
 
-    public ConnectedComponent(Graph graph) {
+    public ConnectedComponent(SimpleGraph graph) {
         marked = new boolean[graph.getV()];
         id = new int[graph.getV()];
         for (int i = 0; i < graph.getV(); i++) {
@@ -21,7 +21,7 @@ public class ConnectedComponent {
         }
     }
 
-    private void dfs(Graph graph, int v) {
+    private void dfs(SimpleGraph graph, int v) {
         marked[v] = true;
         id[v] = count;
 

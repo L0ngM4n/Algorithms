@@ -20,7 +20,17 @@ public class Vertex implements Comparable<Vertex> {
     }
 
     @Override
-    public int compareTo(Vertex o) {
-        return Integer.compare(this.value, o.value);
+    public int compareTo(Vertex other) {
+        return Integer.compare(this.value, other.value);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null || !(obj instanceof Vertex)) {
+            return false;
+        }
+
+        return this.row == ((Vertex) obj).row && this.col == ((Vertex)obj).col;
+
     }
 }

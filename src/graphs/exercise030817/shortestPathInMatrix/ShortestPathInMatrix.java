@@ -1,5 +1,7 @@
 package graphs.exercise030817.shortestPathInMatrix;
 
+import graphs.BinaryMinHeap;
+
 import java.util.*;
 
 /**
@@ -7,16 +9,42 @@ import java.util.*;
  */
 public class ShortestPathInMatrix {
 
+    static Vertex start;
+    static Vertex current = start;
+    static Map<String, String> path;
+    static Map<String, Long> dist;
+
     public static void main(String[] args) {
-        Map<Vertex, List<Vertex>> graph = new HashMap<>();
+        //init
         MyGraphById myGraph = new MyGraphById();
-
+        BinaryMinHeap<Vertex> mapHeap = new BinaryMinHeap<>();
+        path = new HashMap<>();
+        dist = new HashMap<>();
+        //read input
         int[][] matrix = readMatrix();
-
+        //process data
         buildGraph(myGraph, matrix);
+        fillMinHeap(myGraph, mapHeap);
+        //Dijkstra
+        start = myGraph.getV("0 0");
+
+
+        while (!mapHeap.empty()) {
+
+
+        }
+
+
+
 
         System.out.println();
 
+    }
+
+    private static void fillMinHeap(MyGraphById myGraph, BinaryMinHeap<Vertex> mapHeap) {
+        for (Map.Entry<Vertex, List<Vertex>> v : myGraph) {
+            mapHeap.add(v.getKey().value, v.getKey());
+        }
     }
 
     private static void buildGraph(MyGraphById graph, int[][] matrix) {
@@ -30,9 +58,8 @@ public class ShortestPathInMatrix {
                 Vertex vertex = new Vertex(value, r, c);
 
                 graph.addVertex(vertex);
-
                 graph.addChildren(vertex.getKey(), getChildren(matrix, r, c));
-
+                dist.put(vertex.getKey(), Long.MAX_VALUE);
             }
         }
 
@@ -47,23 +74,23 @@ public class ShortestPathInMatrix {
 
         List<Vertex> children = new ArrayList<>();
         int up = row + 1;
-        if(isInMatrix(matrix, up, col)) {
+        if (isInMatrix(matrix, up, col)) {
 
             Vertex above = new Vertex(matrix[up][col], up, col);
             children.add(above);
         }
         int down = row - 1;
-        if(isInMatrix(matrix, down, col)) {
+        if (isInMatrix(matrix, down, col)) {
             Vertex below = new Vertex(matrix[down][col], down, col);
             children.add(below);
         }
         int left = col - 1;
-        if(isInMatrix(matrix, row, left)) {
+        if (isInMatrix(matrix, row, left)) {
             Vertex toTheLeft = new Vertex(matrix[row][left], row, left);
             children.add(toTheLeft);
         }
         int right = col + 1;
-        if(isInMatrix(matrix, row, right)) {
+        if (isInMatrix(matrix, row, right)) {
             Vertex toTheLeft = new Vertex(matrix[row][right], row, right);
             children.add(toTheLeft);
         }
