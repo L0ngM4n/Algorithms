@@ -1,5 +1,6 @@
+package sortingSearching;
+
 import org.apache.commons.lang3.time.StopWatch;
-import sortingSearching.MergeSort;
 import tools.Helpers;
 
 import java.util.Random;
