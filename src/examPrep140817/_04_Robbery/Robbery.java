@@ -1,16 +1,15 @@
-package exam;
+package examPrep140817._04_Robbery;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+
+import java.util.*;
 
 /**
  * 14/09/2017
  */
 public class Robbery {
 
-    static boolean[] color;
+    static boolean WHITE = true;
+    static boolean[] colors;
     static int[] stepsTo;
     static int[] distTo;
     static boolean[] visited;
@@ -20,10 +19,10 @@ public class Robbery {
         Scanner sc = new Scanner(System.in);
 
         String[] input = sc.nextLine().split(" ");
-        color = new boolean[input.length];
+        colors = new boolean[input.length];
 
-        for (int i = 0; i < color.length; i++) {
-            color[i] = input[i].substring(input[i].length() - 1).equals("w");
+        for (int i = 0; i < colors.length; i++) {
+            colors[i] = input[i].substring(input[i].length() - 1).equals("w");
         }
         int energy = Integer.parseInt(sc.nextLine());
         int waitCost = Integer.parseInt(sc.nextLine());
@@ -31,35 +30,56 @@ public class Robbery {
         int end = Integer.parseInt(sc.nextLine());
         int edgeCount = Integer.parseInt(sc.nextLine());
 
-        List<Node>[] graph = initGraph(input);
+        List<Edge>[] graph = initGraph(input);
         initHelperStructures(graph.length);
         fillGraph(sc, edgeCount, graph);
 
         dijkstra(graph, start, end, waitCost);
+
+      int resultEnergy = energy - distTo[end];
+
+
+      if (resultEnergy >= 0) {
+        System.out.println(resultEnergy);
+      } else {
+        System.out.printf("Busted - need %d more energy", Math.abs(resultEnergy));
+      }
     }
 
 
-    private static void dijkstra(List<Node>[] graph, int start, int end, int waitCost) {
+    private static void dijkstra(List<Edge>[] graph, int start, int end, int waitCost) {
+
+
 
         distTo[start] = 0;
-
-        int currentVertex = getCurrentVertex();
-
+        stepsTo[start] = 0;
         while (true) {
+            int currentVertex = getCurrentVertex();
             if (currentVertex == -1) {
                 break;
+            }
+
+            if (currentVertex == end) {
+              break;
             }
 
             visit(graph, currentVertex, waitCost);
         }
 
-        System.out.println();
     }
 
-    private static void visit(List<Node>[] graph, int vertex, int waitCost) {
+    private static void visit(List<Edge>[] graph, int vertex, int waitCost) {
         visited[vertex] = true;
-        for (Node node : graph[vertex]) {
+        for (Edge edge : graph[vertex]) {
+          int steps = stepsTo[vertex];
+          boolean color = steps % 2 == 0 ? colors[edge.to] : !colors[edge.to];
+          int distance = distTo[vertex] + edge.weight + (color ? 0 : waitCost);
 
+          int child = edge.to;
+          if( distTo[child] > distance) {
+            distTo[child] = distance;
+            stepsTo[child] = stepsTo[vertex] + (color ? 1 : 2);
+          }
         }
     }
 
@@ -88,30 +108,30 @@ public class Robbery {
 
     }
 
-    private static void fillGraph(Scanner sc, int edgeCount, List<Node>[] graph) {
+    private static void fillGraph(Scanner sc, int edgeCount, List<Edge>[] graph) {
         for (int i = 0; i < edgeCount; i++) {
             int[] edgeArgs = Arrays.stream(sc.nextLine().split(" ")).mapToInt(Integer::parseInt).toArray();
             int from = edgeArgs[0];
             int to = edgeArgs[1];
             int weight = edgeArgs[2];
 
-            graph[from].add(new Node(to, weight));
+            graph[from].add(new Edge(to, weight));
         }
     }
 
-    private static List<Node>[] initGraph(String[] input) {
-        List<Node>[] graph = new List[input.length];
+    private static List<Edge>[] initGraph(String[] input) {
+        List<Edge>[] graph = new List[input.length];
         for (int i = 0; i < graph.length; i++) {
             graph[i] = new ArrayList<>();
         }
         return graph;
     }
 
-    private static class Node {
+    private static class Edge {
         int to;
         int weight;
 
-        public Node(int to, int weight) {
+        public Edge(int to, int weight) {
             this.to = to;
             this.weight = weight;
         }
