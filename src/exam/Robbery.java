@@ -59,7 +59,7 @@ public class Robbery {
     private static void visit(List<Node>[] graph, int vertex, int waitCost) {
         visited[vertex] = true;
         for (Node node : graph[vertex]) {
-            
+
         }
     }
 
