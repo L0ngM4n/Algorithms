@@ -26,6 +26,17 @@ public class Helpers {
         return sj.toString();
     }
 
+    public static String printMatrix(int[][] array) {
+        StringJoiner sj = new StringJoiner(" ");
+
+        for (int[] ts : array) {
+            Arrays.stream(ts).forEach((e -> sj.add(String.valueOf(e))));
+            sj.add(System.lineSeparator());
+        }
+
+        return sj.toString();
+    }
+
     public static <T extends Comparable<T>> String isSorted(T[] array) {
 
         for (int i = 1; i < array.length - 1; i++) {
