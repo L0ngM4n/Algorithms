@@ -1,6 +1,7 @@
 package examPrep150817;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -50,7 +51,7 @@ public class NestedRectangles {
     if (innerRectangles.size() == 0){
       rectangle.maxDepth = 1;
     } else {
-      Rectangle biggest = innerRectangles.stream().sorted((r1, r2) -> r1.compareTo(r2)).findFirst().get();
+      Rectangle biggest = innerRectangles.stream().sorted(Comparator.naturalOrder()).findFirst().get();
     }
   }
 
